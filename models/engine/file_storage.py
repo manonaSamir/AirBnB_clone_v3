@@ -64,6 +64,7 @@ class FileStorage:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
                 del self.__objects[key]
+
     def get(self, cls, id):
         """Retreives an object by class name and id."""
         key = cls.__name__ + '.' + id
