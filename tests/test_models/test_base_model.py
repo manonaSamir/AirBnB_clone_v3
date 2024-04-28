@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Test BaseModel for expected behavior and documentation"""
-import datetime
+from datetime import datetime
 import inspect
 import models
 import pep8 as pycodestyle
@@ -74,6 +74,7 @@ class TestBaseModel(unittest.TestCase):
         for attr, typ in attrs_types.items():
             with self.subTest(attr=attr, typ=typ):
                 self.assertIn(attr, inst.__dict__)
+                # self.assertIs(type(inst.__dict__[attr]), datetime)
                 self.assertIs(type(inst.__dict__[attr]), typ)
         self.assertEqual(inst.name, "Holberton")
         self.assertEqual(inst.number, 89)
