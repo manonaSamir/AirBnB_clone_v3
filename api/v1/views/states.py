@@ -36,7 +36,7 @@ def delete_state(state_id):
     """
     state = storage.get(State, state_id)
     if state is None:
-        abort(404)
+        return jsonify({"error": "Not a JSON"}), 400
     storage.delete(state)
     storage.save()
     return make_response(jsonify({}), 200)
@@ -66,17 +66,12 @@ def put_state(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-
     if not request.is_json:
         return jsonify({"error": "Not a JSON"}), 400
-
     data = request.get_json()
     ignore = ['id', 'created_at', 'updated_at']
-
     for key, value in data.items():
         if key not in ignore:
             setattr(state, key, value)
-
     storage.save()
-
     return jsonify(state.to_dict()), 200
