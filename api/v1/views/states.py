@@ -50,9 +50,8 @@ def post_state():
     if not request.get_json():
         abort(400, description='Not a JSON')
     data = request.get_json()
-    if 'name' not in request.get_json() or not data['name']:
+    if 'name' not in data or not data['name']:
         abort(400, description='Missing or empty name')
-
     instance = State(**data)
     instance.save()
     return make_response(jsonify(instance.to_dict()), 201)
@@ -65,16 +64,19 @@ def put_state(state_id):
     Updates a State
     """
     state = storage.get(State, state_id)
-
     if not state:
         abort(404)
-    if not request.get_json():
-        abort(400, description='Not a JSON')
-    ignore = ['id', 'created_at', 'updated_at']
+
+    if not request.is_json:
+        return jsonify({"error": "Not a JSON"}), 400
 
     data = request.get_json()
+    ignore = ['id', 'created_at', 'updated_at']
+
     for key, value in data.items():
         if key not in ignore:
             setattr(state, key, value)
+
     storage.save()
-    return make_response(jsonify(state.to_dict()), 200)
+
+    return jsonify(state.to_dict()), 200
