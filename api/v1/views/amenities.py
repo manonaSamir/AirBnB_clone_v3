@@ -12,13 +12,11 @@ def get_amenities():
     Retrieves a list of all amenities
     """
     all_amenities = storage.all(Amenity).values()
-    list_amenities = []
-    for amenity in all_amenities:
-        list_amenities.append(amenity.to_dict())
+    list_amenities = [amenity.to_dict() for amenity in all_amenities]
     return jsonify(list_amenities)
 
 
-@app_views.route('/amenities/<amenity_id>/', methods=['GET'],
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
 def get_amenity(amenity_id):
     """ Retrieves an amenity """
@@ -48,13 +46,13 @@ def post_amenity():
     """
     Creates an amenity
     """
-    if not request.get_json():
+    if not request.is_json:
         abort(400, description="Not a JSON")
 
-    if 'name' not in request.get_json():
+    data = request.get_json()
+    if 'name' not in data:
         abort(400, description="Missing name")
 
-    data = request.get_json()
     instance = Amenity(**data)
     instance.save()
     return make_response(jsonify(instance.to_dict()), 201)
@@ -71,14 +69,13 @@ def put_amenity(amenity_id):
     if not amenity:
         abort(404)
 
-    if not request.get_json():
+    if not request.is_json:
         abort(400, description="Not a JSON")
 
-    ignore = ['id', 'created_at', 'updated_at']
-
     data = request.get_json()
+    ignore = ['id', 'created_at', 'updated_at']
     for key, value in data.items():
         if key not in ignore:
             setattr(amenity, key, value)
     storage.save()
-    return make_response(jsonify(amenity.to_dict()), 200)
+    return jsonify(amenity.to_dict()), 200
