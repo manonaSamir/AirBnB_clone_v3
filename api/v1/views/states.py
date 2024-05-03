@@ -47,15 +47,9 @@ def post_state():
     """
     Creates a State
     """
-    content_type = request.headers.get('Content-Type')
-    data = None
-    if content_type ==  'application/x-www-form-urlencoded':
-        data = request.get_json()
-    elif content_type == 'application/json':
-        data = request.form.to_dict()
-
     if not request.get_json():
         abort(400, description='Not a JSON')
+    data = request.get_json()
     if 'name' not in data or not data['name']:
         abort(400, description='Missing or empty name')
     instance = State(**data)
