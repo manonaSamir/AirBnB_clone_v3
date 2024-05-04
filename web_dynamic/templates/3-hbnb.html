@@ -11,17 +11,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/100-places.css') + '?' + cache_id }}">
 
     <SCRIPT src="https://code.jquery.com/jquery-3.2.1.min.js"></SCRIPT>
-    <SCRIPT src="{{ url_for('static', filename='scripts/2-hbnb.js') + '?' + cache_id }}"></SCRIPT>
+    <SCRIPT src="{{ url_for('static', filename='scripts/3-hbnb.js') + '?' + cache_id }}"></SCRIPT>
   </head>
   <body>
     <header>
-      <HEADER>
-        <div id="header_logo"></div>
-        <div id="api_status" class="available">
-        </div>
-
-      </HEADER>
-
+        <HEADER>
+            <div id="header_logo"></div>
+            <div id="api_status" class="available">
+            </div>
+          </HEADER>
     </header>
     <div class="container">
       <section class="filters">
@@ -60,35 +58,7 @@
       <section class="places">
         <h1>Places</h1>
         {% for place in places.values()|sort(attribute="name") %}
-        <article>
-          <div class="headline">
-            <h2 class="article_title">{{ place.name }}</h2>
-            <div class="price_by_night">&#36;{{ place.price_by_night }}</div>
-          </div>
 
-          <div class="information">
-            <div class="max_guest">
-              <div class="guest_icon"></div>
-              <br />{{ place.max_guest }} Guests
-            </div>
-            <div class="number_rooms">
-              <div class="bed_icon"></div>
-              <br />{{ place.number_rooms }} Rooms
-            </div>
-            <div class="number_bathrooms">
-              <div class="bath_icon"></div>
-              <br />{{ place.number_bathrooms }} Bathrooms
-            </div>
-          </div>
-
-          <div class="user">
-            <strong>Owner:</strong> {{ place.user.first_name }} {{
-            place.user.last_name }}
-          </div>
-
-          <div class="description">{{ place.description|safe }}</div>
-
-        </article>
         {% endfor %}
       </section>
     </div>
